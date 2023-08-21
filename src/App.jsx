@@ -4,7 +4,7 @@ function Products({ products }) {
   return (
     <>
       {products.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {products.map((product) => (
             <div key={product.id} className="rounded shadow overflow-hidden">
               {product.image ? (
@@ -25,7 +25,7 @@ function Products({ products }) {
   );
 }
 
-function ProductList() {
+function ProductList({ brand_id }) {
   const [products, setProducts] = useState([]);
 
   const fetchProductData = () => {
@@ -42,15 +42,11 @@ function ProductList() {
     fetchProductData();
   }, []);
 
-  let brand1 = products.filter(product => product.brand_id == 1);
-  let brand2 = products.filter(product => product.brand_id == 2);
+  let productsOfBrand = products.filter(product => product.brand_id == brand_id);
 
   return (
     <>
-      <h2 className="font-semibold mb-3">Moderno</h2>
-      <Products products={brand1} />
-      <h2 className="font-semibold mb-3 mt-6">Paris</h2>
-      <Products products={brand2} />
+      <Products products={productsOfBrand} />
     </>
   );
 }
@@ -72,18 +68,16 @@ function BrandList() {
     fetchBrandData();
   }, []);
 
-  console.log(brands);
+  // console.log(brands);
 
   return (
     <>
-      <h2 className="font-semibold mb-3">Merek</h2>
       {brands.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-5">
+        <div className="">
           {brands.map((brand) => (
-            <div key={brand.id} className="rounded shadow overflow-hidden">
-              <div className="flex justify-center items-center p-1 capitalize">
-                {brand.name}
-              </div>
+            <div key={brand.id}>
+              <h3 className="font-semibold capitalize mt-5 mb-3">{brand.name}</h3>
+              <ProductList brand_id={brand.id} />
             </div>
           ))}
         </div>
@@ -99,7 +93,6 @@ function App() {
     <div className="container mx-auto p-10">
       <h1 className="text-center text-2xl font-bold mb-5">Katalog Karpet</h1>
       <BrandList />
-      <ProductList />      
     </div>
   );
 }
